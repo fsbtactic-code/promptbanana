@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-setup.py - установка Prompt Banana RAG.
+setup.py - установка Prompt Banana.
 Проверяет зависимости, папку sources/ и строит индекс.
 """
 import sys
@@ -23,7 +23,7 @@ def section(title):
     print(f"{'='*60}")
 
 def main():
-    section("Prompt Banana RAG — Setup")
+    section("Prompt Banana — Setup")
 
     # 1. Зависимости
     section("1/3 Установка зависимостей")

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 search.py - поиск по индексу промпт-инжиниринговых материалов.
@@ -164,7 +164,7 @@ def main():
   python search.py "few-shot prompting claude" --top 3
   python search.py "промпт инжиниринг 2026"
   python search.py --list-sources
-  python search.py "RAG evaluation" --json
+  python search.py "vector database evaluation" --json
         """
     )
     parser.add_argument('query', nargs='?', default=None,
