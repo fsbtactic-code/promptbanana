@@ -29,9 +29,16 @@
 
 ## Установка
 
-Откройте **[INSTALL_PROMPT.md](INSTALL_PROMPT.md)**, скопируйте текст и вставьте в чат Claude Code.
+Скопируйте и вставьте в чат Claude Code:
 
-Claude сам установит всё необходимое, проверит результат и выведет список доступных команд.
+```
+Установи Prompt Banana. Прочитай инструкцию по ссылке и выполни все шаги:
+https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/INSTALL_INSTRUCTIONS.md
+```
+
+Claude сам прочитает инструкцию, установит зависимости, проверит результат и выведет список команд.
+
+
 
 
 
