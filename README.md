@@ -113,28 +113,6 @@ promptbanana/
 
 ---
 
-## Добавление собственной базы знаний
-
-1. Положите `.md` файлы в папку `sources/`
-2. Опционально — анонимизируйте имена:
-   ```bash
-   python anonymize_sources.py
-   ```
-   Это переименует файлы в `doc_001.md`…`doc_N.md`, сохранив маппинг в `sources_map.json` (не попадает в git)
-
-3. Пересоберите индекс:
-   ```bash
-   python build_index.py
-   ```
-
-4. Проверьте поиск:
-   ```bash
-   python search.py "ваш запрос" --top 5
-   python search.py --list-sources
-   ```
-
----
-
 ## Принципы генерации промптов
 
 Каждый скилл реализует **10-слойную архитектуру Prompt Architect Omega v5.0**:
