@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 search.py - поиск по индексу промпт-инжиниринговых материалов.
@@ -29,8 +29,9 @@ try:
     import numpy as np
     from sklearn.metrics.pairwise import cosine_similarity
 except ImportError:
-    print("[ERR] Установите: pip install scikit-learn numpy")
-    sys.exit(1)
+    print("[SKIP] Зависимости не установлены. Запустите: pip install scikit-learn numpy")
+    print("[SKIP] Поиск пропущен — продолжайте без базы знаний.")
+    sys.exit(0)
 
 # Пути — относительно этого скрипта
 BASE_DIR   = Path(__file__).parent
@@ -47,8 +48,9 @@ CHUNK_PREVIEW_WORDS = 120   # сколько слов показать в previe
 def load_index():
     """Загружает индекс и чанки из pickle."""
     if not INDEX_PATH.exists():
-        print("[ERR] Индекс не найден. Запустите сначала: python build_index.py")
-        sys.exit(1)
+        print("[SKIP] База знаний не готова — поиск пропущен.")
+        print("[SKIP] Для активации: python build_index.py")
+        sys.exit(0)
 
     with open(INDEX_PATH, 'rb') as f:
         data = pickle.load(f)
@@ -135,8 +137,8 @@ def format_result(result: dict, rank: int) -> str:
 def list_sources():
     """Выводит список всех источников из мета-файла."""
     if not META_PATH.exists():
-        print("[ERR] meta.json не найден. Запустите python build_index.py")
-        sys.exit(1)
+        print("[SKIP] Метаданные не найдены. Запустите python build_index.py")
+        sys.exit(0)
 
     with open(META_PATH, encoding='utf-8') as f:
         meta = json.load(f)
