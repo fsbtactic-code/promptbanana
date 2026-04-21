@@ -29,14 +29,17 @@
 
 ## Установка
 
-Скопируйте и вставьте в чат Claude Code:
+Вставьте в чат Claude Code:
 
 ```
-Установи Prompt Banana. Прочитай инструкцию по ссылке и выполни все шаги:
-https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/INSTALL_INSTRUCTIONS.md
+Установи Prompt Banana: склонируй репозиторий https://github.com/fsbtactic-code/promptbanana
+в ~/.claude/promptbanana и запусти python ~/.claude/promptbanana/install_global.py
 ```
 
-Claude сам прочитает инструкцию, установит зависимости, проверит результат и выведет список команд.
+Claude выполнит клонирование, установит зависимости и скопирует команды `/promptbnn_*` глобально.
+После — перезапустите Claude Code.
+
+
 
 
 

@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-install_global.py — Prompt Banana: глобальный установщик.
+install_global.py — Prompt Banana: установщик.
 
-Работает на Windows / macOS / Linux.
-Не требует git. Скачивает архив напрямую с GitHub.
+Запуск ПОСЛЕ клонирования репозитория:
+  python install_global.py
 
-Запуск одной командой в Claude Code:
-  python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/install_global.py').read().decode())"
+Что делает:
+  1. Устанавливает зависимости (scikit-learn, numpy)
+  2. Создаёт стартовую базу знаний если sources/ пуста
+  3. Строит поисковый индекс
+  4. Копирует команды /promptbnn_* в ~/.claude/commands/
 """
 
 import sys
@@ -15,84 +18,37 @@ import os
 import io
 import json
 import shutil
-import zipfile
 import subprocess
-import urllib.request
-import urllib.error
 from pathlib import Path
 
-# ── Кодировка для Windows-терминалов ──────────────────────────
+# Кодировка для Windows-терминалов
 if hasattr(sys.stdout, 'buffer'):
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 if hasattr(sys.stderr, 'buffer'):
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
-# ── Константы ─────────────────────────────────────────────────
-REPO_ZIP_URL  = "https://github.com/fsbtactic-code/promptbanana/archive/refs/heads/main.zip"
-REPO_ZIP_DIR  = "promptbanana-main"        # имя папки внутри zip
-INSTALL_DIR   = Path.home() / ".claude" / "promptbanana"
-COMMANDS_DIR  = Path.home() / ".claude" / "commands"
-PLACEHOLDER   = "{PROMPTBANANA_SEARCH}"
+BASE_DIR     = Path(__file__).parent.resolve()
+COMMANDS_DIR = Path.home() / ".claude" / "commands"
+PLACEHOLDER  = "{PROMPTBANANA_SEARCH}"
 
-def section(emoji, text):
+
+def section(n, text):
     print(f"\n{'─'*55}")
-    print(f"  {emoji}  {text}")
+    print(f"  {n}  {text}")
     print(f"{'─'*55}")
 
+
 def pip_install(*packages):
-    """Устанавливает пакеты через текущий Python (sys.executable)."""
     cmd = [sys.executable, "-m", "pip", "install", "--quiet", "--upgrade"] + list(packages)
-    result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace')
-    return result.returncode == 0, result.stderr
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace')
+    return r.returncode == 0, r.stderr.strip()
 
-def download_and_extract():
-    """Скачивает zip-архив репозитория и распаковывает в INSTALL_DIR."""
-    print(f"  [>>] Скачиваем архив...")
-    try:
-        # Некоторые машины требуют User-Agent
-        req = urllib.request.Request(REPO_ZIP_URL, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = resp.read()
-    except urllib.error.URLError as e:
-        print(f"  [ERR] Не удалось скачать архив: {e}")
-        sys.exit(1)
-
-    print(f"  [>>] Распаковываем ({len(data)//1024} KB)...")
-    tmp_dir = INSTALL_DIR.parent / "_pb_tmp"
-    if tmp_dir.exists():
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-
-    try:
-        with zipfile.ZipFile(io.BytesIO(data)) as zf:
-            zf.extractall(tmp_dir)
-    except zipfile.BadZipFile as e:
-        print(f"  [ERR] Поврежденный архив: {e}")
-        sys.exit(1)
-
-    extracted = tmp_dir / REPO_ZIP_DIR
-    if not extracted.exists():
-        # Попробуем найти единственную распакованную папку
-        subdirs = [d for d in tmp_dir.iterdir() if d.is_dir()]
-        if len(subdirs) == 1:
-            extracted = subdirs[0]
-        else:
-            print(f"  [ERR] Неожиданная структура архива: {list(tmp_dir.iterdir())}")
-            sys.exit(1)
-
-    if INSTALL_DIR.exists():
-        shutil.rmtree(INSTALL_DIR, ignore_errors=True)
-    shutil.move(str(extracted), str(INSTALL_DIR))
-    shutil.rmtree(tmp_dir, ignore_errors=True)
-    print(f"  [OK] Установлено в: {INSTALL_DIR}")
 
 def build_index():
-    """Собирает поисковый индекс."""
-    sources_dir = INSTALL_DIR / "sources"
+    sources_dir = BASE_DIR / "sources"
     sources_dir.mkdir(exist_ok=True)
 
-    md_files = list(sources_dir.glob("*.md"))
-    if not md_files:
+    if not list(sources_dir.glob("*.md")):
         starter = sources_dir / "doc_001.md"
         starter.write_text(
             "# Prompt Engineering Starter\n\n"
@@ -103,35 +59,34 @@ def build_index():
             "System prompts define: role, context, goal, constraints, output format.\n",
             encoding='utf-8'
         )
-        print("  [>>] Создан стартовый источник (можно добавить свои .md файлы позже)")
+        print("  [>>] Создан стартовый источник (добавьте свои .md файлы в sources/ позже)")
 
-    result = subprocess.run(
-        [sys.executable, str(INSTALL_DIR / "build_index.py")],
-        cwd=INSTALL_DIR,
+    r = subprocess.run(
+        [sys.executable, str(BASE_DIR / "build_index.py")],
+        cwd=BASE_DIR,
         capture_output=True,
         text=True,
         encoding='utf-8',
         errors='replace'
     )
-    if result.returncode != 0:
-        print(f"  [WARN] Индекс не собран — скиллы работают без поиска по базе")
-        print(f"         {result.stderr.strip()[:200]}")
+    if r.returncode != 0:
+        print(f"  [!]  Индекс не собран — команды работают без поиска по базе")
         return False
 
-    lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
-    summary = next((l for l in lines if "Чанков" in l or "DONE" in l), "OK")
-    print(f"  [OK] Индекс готов: {summary}")
+    for line in r.stdout.strip().splitlines():
+        if "Чанков" in line or "DONE" in line:
+            print(f"  [OK] {line.strip()}")
     return True
 
-def install_skills():
-    """Копирует скилл-файлы в ~/.claude/commands/ с подстановкой пути."""
-    COMMANDS_DIR.mkdir(parents=True, exist_ok=True)
-    search_path = str(INSTALL_DIR / "search.py")
 
-    skills_src = INSTALL_DIR / ".claude" / "commands"
+def install_skills():
+    COMMANDS_DIR.mkdir(parents=True, exist_ok=True)
+    search_path = str(BASE_DIR / "search.py")
+
+    skills_src = BASE_DIR / ".claude" / "commands"
     if not skills_src.exists():
-        print("  [ERR] Скилл-файлы не найдены в архиве")
-        sys.exit(1)
+        print("  [ERR] Папка .claude/commands не найдена")
+        return []
 
     installed = []
     for skill_file in sorted(skills_src.glob("promptbnn_*.md")):
@@ -140,13 +95,14 @@ def install_skills():
         dest = COMMANDS_DIR / skill_file.name
         dest.write_text(content, encoding='utf-8')
         installed.append("/" + skill_file.stem)
+        print(f"  [OK] /{skill_file.stem}")
 
-    # Сохраняем конфиг установки
-    cfg = {"search_py": search_path, "install_dir": str(INSTALL_DIR), "version": "1.0"}
-    (INSTALL_DIR / "install_config.json").write_text(
+    cfg = {"search_py": search_path, "install_dir": str(BASE_DIR)}
+    (BASE_DIR / "install_config.json").write_text(
         json.dumps(cfg, ensure_ascii=False, indent=2), encoding='utf-8'
     )
     return installed
+
 
 def main():
     print()
@@ -155,50 +111,37 @@ def main():
     print("=" * 55)
     print(f"  Python  : {sys.version.split()[0]}")
     print(f"  Система : {sys.platform}")
-    print(f"  Папка   : {INSTALL_DIR}")
+    print(f"  Папка   : {BASE_DIR}")
 
-    # ── 1. Скачать и распаковать ──────────────────────────────
-    section("1/4", "Загрузка файлов")
-    download_and_extract()
-
-    # ── 2. Зависимости ───────────────────────────────────────
-    section("2/4", "Установка зависимостей")
+    section("1/3", "Установка зависимостей")
     ok, err = pip_install("scikit-learn", "numpy")
     if ok:
         print("  [OK] scikit-learn, numpy")
     else:
-        print(f"  [WARN] pip: {err.strip()[:150]}")
-        print("         Если поиск не работает — установите вручную: pip install scikit-learn numpy")
+        print(f"  [!]  {err[:150]}")
+        print("       Установите вручную: pip install scikit-learn numpy")
 
-    # ── 3. Индекс ─────────────────────────────────────────────
-    section("3/4", "Сборка базы знаний")
+    section("2/3", "Сборка базы знаний")
     build_index()
 
-    # ── 4. Скилл-файлы ────────────────────────────────────────
-    section("4/4", "Установка команд")
+    section("3/3", "Установка команд")
     installed = install_skills()
-    for cmd in installed:
-        print(f"  [OK] {cmd}")
 
-    # ── Готово ────────────────────────────────────────────────
     print()
     print("=" * 55)
-    print("  ✅  PROMPT BANANA УСТАНОВЛЕН")
+    print("  ✅  УСТАНОВКА ЗАВЕРШЕНА")
     print("=" * 55)
     print()
     print("  Перезапустите Claude Code, затем используйте:")
     print()
     for cmd in installed:
-        print(f"    {cmd} [описание вашей задачи]")
+        print(f"    {cmd} [описание задачи]")
     print()
     print("  Пример:")
     print("    /promptbnn_claude_opus47 промпт для анализа")
     print("    конкурентов в нише SaaS")
     print()
-    print("  Добавить собственные источники:")
-    print(f"    {INSTALL_DIR / 'sources'}")
-    print(f"    python \"{INSTALL_DIR / 'build_index.py'}\"")
-    print()
+
 
 if __name__ == "__main__":
     main()

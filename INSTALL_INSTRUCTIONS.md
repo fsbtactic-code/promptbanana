@@ -1,46 +1,29 @@
-ЗАДАЧА: установить Prompt Banana — набор команд для генерации профессиональных промптов под AI-модели.
+Установи инструмент Prompt Banana из репозитория на GitHub.
 
-Выполни все шаги ниже последовательно. При любой ошибке — исправь и продолжи. Не останавливайся, ищи обходной путь.
+Шаги:
 
+1. Склонируй репозиторий в папку ~/.claude/promptbanana:
+   git clone https://github.com/fsbtactic-code/promptbanana ~/.claude/promptbanana
 
-ШАГ 1 — Определи рабочую команду Python
-Запусти: python --version
-Если ошибка или версия < 3 — попробуй: python3 --version
-Запомни какая команда работает (python или python3). Используй её во всех следующих шагах.
+2. Запусти установщик:
+   python ~/.claude/promptbanana/install_global.py
 
+   Если команда python не найдена — попробуй python3.
+   Если git не установлен — скачай архив вручную:
+   https://github.com/fsbtactic-code/promptbanana/archive/refs/heads/main.zip
+   Распакуй в ~/.claude/promptbanana/ и запусти python install_global.py
 
-ШАГ 2 — Скачай и запусти установщик
+3. Проверь что установка прошла успешно — должны появиться файлы:
+   Windows: %USERPROFILE%\.claude\commands\promptbnn_claude_opus47.md
+   Mac/Linux: ~/.claude/commands/promptbnn_claude_opus47.md
 
-Вариант A (стандартный):
-[python/python3] -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/install_global.py').read().decode())"
+4. Сообщи пользователю об успешной установке и выведи список доступных команд:
+   /promptbnn_claude_opus47
+   /promptbnn_claude_sonnet46
+   /promptbnn_gemini3_1_pro
+   /promptbnn_gemini3_1_advanced
+   /promptbnn_gpt5
+   /promptbnn_o4
+   /promptbnn_deepseek_r3
 
-Если ошибка SSL — Вариант B:
-[python/python3] -c "import ssl; ssl._create_default_https_context = ssl._create_unverified_context; import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/install_global.py').read().decode())"
-
-Если не работает ни один вариант — Вариант C:
-curl -o install_global.py https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/install_global.py
-[python/python3] install_global.py
-
-
-ШАГ 3 — Проверь результат
-Проверь наличие файлов:
-- Windows: %USERPROFILE%\.claude\commands\promptbnn_claude_opus47.md
-- Mac/Linux: ~/.claude/commands/promptbnn_claude_opus47.md
-
-Если файлы есть — установка успешна.
-Если нет — покажи ошибку из шага 2 и исправь.
-
-
-ШАГ 4 — Подтверди установку
-Выведи сообщение:
-
-✅ Prompt Banana установлен. Доступные команды:
-/promptbnn_claude_opus47
-/promptbnn_claude_sonnet46
-/promptbnn_gemini3_1_pro
-/promptbnn_gemini3_1_advanced
-/promptbnn_gpt5
-/promptbnn_o4
-/promptbnn_deepseek_r3
-
-Затем напомни пользователю: "Перезапустите Claude Code чтобы команды стали активны."
+   Напомни: перезапустить Claude Code после установки.
