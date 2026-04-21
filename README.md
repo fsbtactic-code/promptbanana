@@ -27,25 +27,22 @@
 
 ---
 
-## Быстрый старт — установка одним промптом в Claude Code
+## Установка — один промпт в Claude Code
 
-Откройте терминал в Claude Code и вставьте:
+Вставьте в чат или терминал Claude Code:
 
 ```
-Установи Prompt Banana RAG:
-
-1. Склонируй репозиторий: git clone https://github.com/fsbtactic-code/promptbanana .
-2. Установи зависимости: pip install -r requirements.txt
-3. Создай папку sources/ и добавь в неё свои .md файлы с базой знаний
-4. Запусти: python setup.py
-5. Проверь: python search.py "chain of thought"
-
-После успешной установки скажи мне об этом и покажи список доступных /prompt команд.
+python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/install_global.py').read().decode())"
 ```
 
-> **Примечание:** Если хотите использовать собственную базу знаний — положите `.md` файлы в папку `sources/` перед запуском `setup.py`. Он предложит анонимизировать имена файлов автоматически.
+Всё. Скрипт сам:
+- Клонирует репозиторий в `~/.claude/promptbanana/`
+- Установит зависимости (`scikit-learn`, `numpy`)
+- Соберёт индекс
+- Скопирует команды `/promptbnn_*` в `~/.claude/commands/` — они доступны глобально из любого проекта
 
 ---
+
 
 ## Скилл-команды (slash commands)
 
