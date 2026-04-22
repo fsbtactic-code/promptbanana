@@ -4,7 +4,29 @@
 
 ---
 
-## Как установить
+## ⚡ Быстрая установка через .skill файл (Claude.ai)
+
+1. Запустите `python package.py` — создаст папку `dist/` с файлами
+2. Откройте [claude.ai](https://claude.ai) → **Settings** → **Skills** → **Upload**
+3. Выберите нужный `.skill` файл из папки `dist/`
+
+| Файл | Модель |
+|---|---|
+| `prompt-banana-claude-opus47.skill` | Claude Opus 4.7 |
+| `prompt-banana-claude-sonnet46.skill` | Claude Sonnet 4.6 |
+| `prompt-banana-gemini-pro.skill` | Gemini 3.1 Pro |
+| `prompt-banana-gemini-advanced.skill` | Gemini 3.1 Advanced |
+| `prompt-banana-gpt5.skill` | GPT-5 |
+| `prompt-banana-o4.skill` | o4 / o4-mini |
+| `prompt-banana-deepseek-r3.skill` | DeepSeek R3 |
+
+> Альтернатива `.skill`: используйте `.md` файлы из папки `dist/` — они тоже содержат YAML frontmatter.
+
+---
+
+## Ручная установка (если нет доступа к .skill)
+
+
 
 ### Claude.ai → через Projects (постоянно)
 

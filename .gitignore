@@ -21,3 +21,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Собранные дистрибутивы
+dist/
