@@ -1,112 +1,73 @@
-# 🍌 Prompt Banana — Web Edition
+# 🍌 Prompt Banana — Skills для Claude.ai
 
-Системные промпты для генерации мега-промптов прямо в браузере. Без установки, без терминала.
-
----
-
-## ⚡ Быстрая установка через .skill файл (Claude.ai)
-
-1. Запустите `python package.py` — создаст папку `dist/` с файлами
-2. Откройте [claude.ai](https://claude.ai) → **Settings** → **Skills** → **Upload**
-3. Выберите нужный `.skill` файл из папки `dist/`
-
-| Файл | Модель |
-|---|---|
-| `prompt-banana-claude-opus47.skill` | Claude Opus 4.7 |
-| `prompt-banana-claude-sonnet46.skill` | Claude Sonnet 4.6 |
-| `prompt-banana-gemini-pro.skill` | Gemini 3.1 Pro |
-| `prompt-banana-gemini-advanced.skill` | Gemini 3.1 Advanced |
-| `prompt-banana-gpt5.skill` | GPT-5 |
-| `prompt-banana-o4.skill` | o4 / o4-mini |
-| `prompt-banana-deepseek-r3.skill` | DeepSeek R3 |
-
-> Альтернатива `.skill`: используйте `.md` файлы из папки `dist/` — они тоже содержат YAML frontmatter.
+Скилл-пакет для генерации мега-промптов под любую AI-модель 2026 года.
+Один файл — все модели: Claude, Gemini, GPT-5, o4, DeepSeek.
 
 ---
 
-## Ручная установка (если нет доступа к .skill)
+## Установка
 
+### Шаг 1 — Скачайте файл
 
+**[⬇ Скачать prompt-banana.zip](https://github.com/fsbtactic-code/promptbanana/raw/main/releases/prompt-banana.zip)**
 
-### Claude.ai → через Projects (постоянно)
+### Шаг 2 — Загрузите в Claude.ai
 
-Самый удобный способ — создать отдельный **Project** для каждой модели:
+1. Откройте [claude.ai](https://claude.ai)
+2. Перейдите в **Customize → Skills**
+3. Нажмите **Upload Skill**
+4. Выберите скачанный `prompt-banana.zip`
+5. Активируйте скилл
 
-1. Откройте [claude.ai](https://claude.ai) → нажмите **Projects** в левом меню
-2. **+ New Project** → дайте название (например, "Prompt Banana — Opus 4.7")
-3. Нажмите **⚙ Project Settings** → раздел **Project Instructions**
-4. Откройте нужный файл по ссылке ниже → **выделите всё** (Ctrl+A) → **скопируйте**
-5. Вставьте в поле Project Instructions → **Save**
+### Шаг 3 — Используйте
 
-Теперь каждый новый чат в этом проекте автоматически использует промпт-архитектор.
-
-**Файлы для Claude:**
-- [claude_opus47.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/claude_opus47.md) — для генерации промптов под Claude Opus 4.7
-- [claude_sonnet46.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/claude_sonnet46.md) — для генерации промптов под Claude Sonnet 4.6
-
-**Использование после установки:**
-Откройте нужный Project → напишите вашу задачу → получите мега-промпт.
-
----
-
-### ChatGPT → через Custom GPT (постоянно)
-
-1. Откройте [chatgpt.com](https://chatgpt.com) → нажмите **Explore GPTs** → **+ Create**
-2. Перейдите на вкладку **Configure**
-3. В поле **Instructions** вставьте содержимое нужного файла:
-   - [gpt5.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gpt5.md) — для GPT-5
-   - [o4.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/o4.md) — для o4 / o4-mini
-4. Дайте GPT название → **Save** → **Only me** (приватный)
-
-Теперь этот Custom GPT всегда работает как Prompt Architect для нужной модели.
-
-**Быстрый вариант (одноразово):**
-Просто вставьте файл первым сообщением в новый чат, затем опишите задачу.
-
----
-
-### Gemini → через Gems (постоянно)
-
-1. Откройте [gemini.google.com](https://gemini.google.com) → нажмите **Gems** в левом меню
-2. **+ New Gem** → дайте название
-3. В поле **Instructions** вставьте содержимое:
-   - [gemini_3_1_pro.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gemini_3_1_pro.md) — для Gemini 3.1 Pro
-   - [gemini_3_1_advanced.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gemini_3_1_advanced.md) — для Gemini Advanced
-4. **Save** → откройте этот Gem для работы
-
----
-
-### DeepSeek → одноразово (Gems пока нет)
-
-DeepSeek пока не поддерживает сохранённые системные промпты в веб-интерфейсе.
-
-1. Откройте [chat.deepseek.com](https://chat.deepseek.com) → новый чат
-2. Включите **DeepThink (R1)** режим (иконка в интерфейсе)
-3. Вставьте содержимое [deepseek_r3.md](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/deepseek_r3.md) первым сообщением
-4. Опишите задачу в следующем сообщении
-
----
-
-## Быстрые ссылки на файлы
-
-| Файл | Скопировать содержимое |
-|---|---|
-| Claude Opus 4.7 | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/claude_opus47.md) |
-| Claude Sonnet 4.6 | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/claude_sonnet46.md) |
-| Gemini 3.1 Pro | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gemini_3_1_pro.md) |
-| Gemini 3.1 Advanced | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gemini_3_1_advanced.md) |
-| GPT-5 | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/gpt5.md) |
-| o4 / o4-mini | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/o4.md) |
-| DeepSeek R3 | [открыть](https://raw.githubusercontent.com/fsbtactic-code/promptbanana/main/web/deepseek_r3.md) |
-
----
-
-## Пример использования
-
-После установки в Claude.ai Project пишете:
+Напишите в новом чате:
 
 ```
-Сделай промпт для плана публикаций в Threads для маркетолога
+Создай промпт для [ваша задача] под Claude Opus 4.7
 ```
 
-Claude генерирует полный мега-промпт (8–16K символов) под выбранную модель с 10-слойной архитектурой, который вы копируете и используете.
+или просто:
+
+```
+Мне нужен промпт для анализа конкурентов
+```
+
+Claude спросит целевую модель и сгенерирует готовый мега-промпт.
+
+---
+
+## Поддерживаемые модели
+
+| Модель | Архитектура | Длина промпта |
+|---|---|---|
+| Claude Opus 4.7 | XML, 10 слоёв, Extended Thinking | 8–16K символов |
+| Claude Sonnet 4.6 | Компактный XML, Tool Use | 4–10K символов |
+| Gemini 3.1 Pro | Текст, якорение контекста | 6–12K символов |
+| Gemini 3.1 Advanced | Deep Research, 20M токенов | 8–15K символов |
+| GPT-5 | Markdown, Canvas, Рой Экспертов | 8–18K символов |
+| o4 / o4-mini | 4 элемента, без CoT | 2–6K символов |
+| DeepSeek R3 | R-Rules, ультра-минимал | 1.5–5K символов |
+
+---
+
+## Как это работает
+
+Скилл содержит профиль каждой модели с точными правилами синтаксиса, антипаттернами и архитектурой промпта. Claude читает нужный профиль и генерирует промпт, оптимизированный под конкретную модель — правильная длина, правильный синтаксис, правильные механики.
+
+---
+
+## Содержимое пакета
+
+```
+prompt-banana.zip
+└── prompt-banana/
+    ├── Skill.md              ← главный файл (роутинг)
+    ├── claude-opus47.md      ← профиль Claude Opus 4.7
+    ├── claude-sonnet46.md    ← профиль Claude Sonnet 4.6
+    ├── gemini-pro.md         ← профиль Gemini 3.1 Pro
+    ├── gemini-advanced.md    ← профиль Gemini 3.1 Advanced
+    ├── gpt5.md               ← профиль GPT-5
+    ├── o4.md                 ← профиль o4 / o4-mini
+    └── deepseek-r3.md        ← профиль DeepSeek R3
+```
