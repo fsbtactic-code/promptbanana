@@ -113,6 +113,25 @@ def make_md_file(meta: dict):
     return out_path
 
 
+def make_all_in_one_skill():
+    """
+    Создаёт единый .skill файл со всеми 7 моделями.
+    Пользователь загружает один файл — получает Архитектора для любой модели.
+    """
+    src = BASE_DIR / "web" / "prompt-banana-all.skill"
+    if not src.exists():
+        print("  [SKIP] web/prompt-banana-all.skill не найден")
+        return
+
+    out_path = DIST_DIR / "prompt-banana-all.skill"
+    with zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("SKILL.md", src.read_text(encoding="utf-8"))
+
+    size_kb = max(out_path.stat().st_size // 1024, 1)
+    print(f"  [OK] {out_path.name} ({size_kb} KB)  ← все 7 моделей в одном файле")
+    return out_path
+
+
 def main():
     print()
     print("=" * 52)
@@ -121,14 +140,17 @@ def main():
 
     DIST_DIR.mkdir(exist_ok=True)
 
-    print("\n  📦 Создание .skill файлов:")
+    print("\n  🌟 Единый скилл (все модели в одном файле):")
+    all_in_one = make_all_in_one_skill()
+
+    print("\n  📦 Отдельные .skill файлы (по одному на модель):")
     skill_files = []
     for meta in SKILLS:
         f = make_skill_file(meta)
         if f:
             skill_files.append(f)
 
-    print("\n  📄 Создание .md файлов (с YAML frontmatter):")
+    print("\n  📄 .md файлы с YAML frontmatter:")
     md_files = []
     for meta in SKILLS:
         f = make_md_file(meta)
@@ -137,14 +159,19 @@ def main():
 
     print()
     print("=" * 52)
-    print(f"  ✅  Готово! Создано {len(skill_files)} .skill + {len(md_files)} .md")
+    print(f"  ✅  Готово!")
     print("=" * 52)
+    if all_in_one:
+        print(f"\n  🌟 {all_in_one.name}  ← загрузить ОДИН раз")
+    print(f"  📦 {len(skill_files)} отдельных .skill файлов")
+    print(f"  📄 {len(md_files)} .md файлов")
     print(f"\n  Папка: {DIST_DIR}")
     print()
-    print("  Как загрузить в claude.ai:")
-    print("  → Настройки → Skills → Upload → выбрать .skill файл")
+    print("  Установка:")
+    print("  → claude.ai → Settings → Skills → Upload → prompt-banana-all.skill")
     print()
 
 
 if __name__ == "__main__":
     main()
+
